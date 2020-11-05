@@ -99,6 +99,9 @@ const data = [
     <p class="date">{date of the article}</p>
 
     {three separate paragraph elements}
+    <p>data.firstParagraph</p>
+    <p>data.firstParagraph</p>
+    <p>data.thirdParagraph</p>
 
     <span class="expandButton">+</span>
   </div>
@@ -111,6 +114,91 @@ const data = [
   Step 4: Outside your function now, loop over the data. At each iteration you'll use your component
   to create a div.article element and append it to the DOM inside div.articles (see index.html).
 
-  Step 5: Try adding new article object to the data array. Make sure it is in the same format as the others.
+  Step 5: Try adding a new article object to the data array. Make sure it is in the same format as the others.
   Refresh the page to see the new article.
 */
+
+// dataItem is one item/article from the data array being taken in as a param
+// when the function is called using the map method
+function articleMaker(dataItem) {
+  // create a div element
+  const container = document.createElement('div');
+  // add a class called article to the div
+  container.classList.add('article');
+  // create h2 element to append to the div container
+  const heading = document.createElement('h2');
+  // add text for the title of the article
+  heading.textContent = dataItem.title;
+  // p0
+  const para0 = document.createElement('p');
+  // this p element will hold the date
+  para0.textContent = dataItem.date;
+  // add a class called date to the p0 element
+  para0.classList.add('date');
+  // p1
+  const para1 = document.createElement('p');
+  // add the text
+  para1.textContent = dataItem.firstParagraph;
+  // p2
+  const para2 = document.createElement('p');
+  // add the text
+  para2.textContent = dataItem.secondParagraph;
+  // p3
+  const para3 = document.createElement('p');
+  // add the text
+  para3.textContent = dataItem.thirdParagraph;
+  // create a span element to append
+  const span = document.createElement('span');
+  // add a class called expandButton to span element
+  span.classList.add('expandButton');
+  // add a + with textContent property
+  span.textContent = '+';
+  // apply an event listener to the span
+  span.addEventListener('click', () => {
+    // toggle the class on or off with a click
+    // make sure to use classList.toggle
+    container.classList.toggle('article-open');
+  })
+  // now append the children to the div
+  // append the h2
+  container.appendChild(heading);
+  // append p0 with date
+  container.appendChild(para0);
+  // append p1
+  container.appendChild(para1);
+  // append p2
+  container.appendChild(para2);
+  // append p3
+  container.appendChild(para3);
+  // append the span
+  container.appendChild(span);
+
+  // return the div container nesting the child elements
+  return container;
+}
+// must call the component function after pushing my new object to the array
+// access the data array and push another object of the same form
+// create this new object
+const mattsArticle = {
+  'title':'Riemann Zeta Function',
+  'date':'Nov of 1859',
+  'firstParagraph':'The zeta function is used in mathematics to express a sum over the natural numbers 1, 2, 3, ... all with the same power. For example 1^s + 2^s + 3^s + ...',
+  'secondParagraph':'The zeta function takes in one argument s representing a real or complex number as an exponent to the natural numbers in the sum. For example, s = 2 or s = 11 + 3i',
+  'thirdParagraph':'The Riemann Hypothesis is a conjecture stating that some complex values of s with real part of 1/2 will result in a sum of zero. For example, s = 1/2 + 5i, and 1^(1/2 + 5i) + 2^(1/2 + 5i) + 3^(1/2 + 5i) + ...'
+};
+// push this object into the data array
+data.push(mattsArticle);
+// store the div.articles container in a variable
+const articlesContainer = document.querySelector('div.articles');
+// use map method to save every instance/component created into newComponents array
+const newComponents = data.map(article => {
+  // call the component function and store result
+  const newArticle = articleMaker(article);
+  // return newArticle component to map method
+  return newArticle;
+})
+// use forEach method to append all instances stored in the mapped array to div.articles
+newComponents.forEach(comp => {
+  // append all the child components
+  articlesContainer.appendChild(comp);
+})
